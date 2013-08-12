@@ -2,7 +2,13 @@
 <resources>
 
     <string name="app_name">AlcCalc</string>
+    
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
 
+    <string name="description">Beschreibung</string>
+    <string name="stWuerze">Stammwürze</string>
+    <string name="rstExtrakt">RestExtract</string>
+    <string name="calculate">Berechnen</string>
+    <string name="saveToFile">Neuen Datensatz im Verlauf speichern?</string>
+    <string name="parserError">Fehler beim Auswerten der Eingabefelder</string>
 </resources>
