@@ -21,8 +21,7 @@ public abstract class DataRow extends LinearLayout {
 	public DataRow(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
-		LayoutInflater.from(getContext())
-				.inflate(R.layout.layout_datarow, this);
+		LayoutInflater.from(getContext()).inflate(R.layout.layout_datarow, this);
 		this.mDescr = (TextView) this.findViewById(R.id.descr);
 		this.mInput = (EditText) this.findViewById(R.id.input);
 

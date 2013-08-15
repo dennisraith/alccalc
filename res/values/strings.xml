@@ -7,8 +7,16 @@
 
     <string name="description">Beschreibung</string>
     <string name="stWuerze">Stammwürze</string>
-    <string name="rstExtrakt">RestExtract</string>
+    <string name="rstExtrakt">Restextrakt</string>
     <string name="calculate">Berechnen</string>
     <string name="saveToFile">Neuen Datensatz im Verlauf speichern?</string>
     <string name="parserError">Fehler beim Auswerten der Eingabefelder</string>
+    
+    <string name="realExtrakt">Echter Restextrakt</string>
+    <string name="dichte">Dichte</string>
+    <string name="gewProAlk">Echter Restextrakt</string>
+    <string name="volume">Echter Restextrakt</string>
+    <string name="endvergaerung">Endvergärung</string>
+    <string name="brennwcal">Brennwert: (kcal)</string>
+    <string name="brennwjoule">Brennwert: (joule)</string>
 </resources>
