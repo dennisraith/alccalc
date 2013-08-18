@@ -1,13 +1,23 @@
 package com.dr.ac.model;
 
+import java.util.Date;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.dr.ac.constants.ACConsts;
 
 public class ResultModel {
 
 	private int STATUS_CODE = ACConsts.STATUS_ERROR;
 
-	private final double mStwrz;
-	private final double mRstExtr;
+	private String mDescr = "";
+	private String mComment = "";
+
+	private Date mDateCreated = new Date();
+
+	private double mStwrz;
+	private double mRstExtr;
 	private double mRealRestExtr;
 	private double mDichte;
 	private double mGewProAlk;
@@ -15,23 +25,23 @@ public class ResultModel {
 	private double mEndVergärung;
 	private double mBrennwertCal;
 	private double mBrennwertJoule;
-	
-	
-	public ResultModel(double stwrz, double rstextra){
+
+	public ResultModel() {
+
+	}
+
+	public ResultModel(double stwrz, double rstextra) {
 		this.mStwrz = stwrz;
 		this.mRstExtr = rstextra;
 		this.calc();
+
 	}
-	
-	
+
 	public void calc() {
 		if (this.generateResult()) {
 			this.STATUS_CODE = ACConsts.STATUS_OK;
 		}
 	}
-	
-	
-	
 
 	private boolean generateResult() {
 		this.mEndVergärung = this.calcEndVergärung();
@@ -44,18 +54,19 @@ public class ResultModel {
 		return true;
 	}
 
-	private double calcBrennwert(){
+	private double calcBrennwert() {
 		double result;
-		result = (6.9*mGewProAlk+4*(mRealRestExtr-0.1))*10*1*mDichte;
+		result = (6.9 * mGewProAlk + 4 * (mRealRestExtr - 0.1)) * 10 * 1
+				* mDichte;
 		return result;
 	}
-	
-	private double calcBrennwertJoule(){
+
+	private double calcBrennwertJoule() {
 		double result;
-		result = mBrennwertCal*4.18684;
+		result = mBrennwertCal * 4.18684;
 		return result;
 	}
-	
+
 	private double calcEndVergärung() {
 
 		double result;
@@ -96,41 +107,91 @@ public class ResultModel {
 		return this.STATUS_CODE != ACConsts.STATUS_OK;
 
 	}
-	public double getStWrz(){
+
+	public double getStWrz() {
 		return this.mStwrz;
 	}
-	
-	public double getRstExtrakt(){
+
+	public double getRstExtrakt() {
 		return this.mRstExtr;
 	}
-	
-	public double getRealRestExtrakt(){
+
+	public double getRealRestExtrakt() {
 		return this.mRealRestExtr;
 	}
-	
-	public double getDichte(){
+
+	public double getDichte() {
 		return this.mDichte;
 	}
-	
-	public double getGewProAlk(){
+
+	public double getGewProAlk() {
 		return this.mGewProAlk;
 	}
-	public double getVolume(){
+
+	public double getVolume() {
 		return this.mVol;
 	}
-	
-	public double getEndvergärung(){
+
+	public double getEndvergärung() {
 		return this.mEndVergärung;
 	}
-	
-	public double getBrennwertCal(){
+
+	public double getBrennwertCal() {
 		return this.mBrennwertCal;
 	}
-	
-	public double getBrennwertJoule(){
+
+	public double getBrennwertJoule() {
 		return this.mBrennwertJoule;
 	}
-
 	
+	public String getDescription(){
+		return this.mDescr;
+	}
+
+	public JSONObject toJSON() throws JSONException {
+		JSONObject data = new JSONObject();
+		data.put("descr", mDescr);
+		data.put("date", mDateCreated.getTime());
+		data.put("comment", mComment);
+		data.put("stwrz", mStwrz);
+		data.put("rstextr", mRstExtr);
+		data.put("realrstextr", mRealRestExtr);
+		data.put("dichte", mDichte);
+		data.put("gpa", mGewProAlk);
+		data.put("vol", mVol);
+		data.put("evg", mEndVergärung);
+		data.put("bwcal", mBrennwertCal);
+		data.put("bwjoule", mBrennwertJoule);
+		return data;
+
+	}
+
+	public static ResultModel fromJSON(JSONObject data) throws JSONException {
+		ResultModel model = new ResultModel();
+
+		model.mDescr = data.optString("descr");
+		model.setTime(data.optLong("date"));
+		model.mComment = data.optString("comment");
+
+		model.mStwrz = data.optDouble("stwrz");
+		model.mRstExtr = data.optDouble("rstextr");
+		model.mRealRestExtr = data.optDouble("realrstextr");
+		model.mDichte = data.optDouble("dichte");
+		model.mGewProAlk = data.optDouble("gpa");
+		model.mVol = data.optDouble("vol");
+		model.mEndVergärung = data.optDouble("evg");
+		model.mBrennwertCal = data.optDouble("bwcal");
+		model.mBrennwertJoule = data.optDouble("bwjoule");
+		return model;
+
+	}
+
+	public Date getCreationDate(){
+		return this.mDateCreated;
+	}
+	
+	public void setTime(long time) {
+		this.mDateCreated = new Date(time);
+	}
 
 }

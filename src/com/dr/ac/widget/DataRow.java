@@ -35,5 +35,9 @@ public abstract class DataRow extends LinearLayout {
 	public String getInput(){
 		return this.mInput.getText().toString();
 	}
+	
+	public void setInput(String input){
+		this.mInput.setText(input);
+	}
 
 }

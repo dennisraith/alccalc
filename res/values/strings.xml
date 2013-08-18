@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">AlcCalc</string>
-    
-    <string name="action_settings">Settings</string>
+    <string-array name="menu_values">
+        <item>1</item>
+        <item>1</item>
+    </string-array>
 
+    <string name="toast_save_successful">Datensatz wurde gespeichert</string>
+    
+    <string name="app_name">AlcCalc</string>
+    <string name="action_settings">Settings</string>
     <string name="description">Beschreibung</string>
     <string name="stWuerze">Stammwürze</string>
     <string name="rstExtrakt">Restextrakt</string>
     <string name="calculate">Berechnen</string>
     <string name="saveToFile">Neuen Datensatz im Verlauf speichern?</string>
     <string name="parserError">Fehler beim Auswerten der Eingabefelder</string>
-    
     <string name="realExtrakt">Echter Restextrakt</string>
     <string name="dichte">Dichte</string>
     <string name="gewProAlk">Echter Restextrakt</string>
@@ -19,4 +23,11 @@
     <string name="endvergaerung">Endvergärung</string>
     <string name="brennwcal">Brennwert: (kcal)</string>
     <string name="brennwjoule">Brennwert: (joule)</string>
+
+    <!-- Fragments -->
+    <string name="fragment_input">Neue Berechnung</string>
+    <string name="fragment_history">Historie</string>
+    <string name="fragment_navigation">Navigation</string>
+    <string name="fragment_result">Ergebnis</string>
+
 </resources>

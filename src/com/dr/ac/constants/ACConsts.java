@@ -9,8 +9,15 @@ public class ACConsts {
 
 	public static final int INPUT_NUMBER = 332;
 	public static final int INPUT_TEXT = 342;
+	
+	public static final String DB_FILE_NAME="data.txt"; 
 
 
+	public static String SIS_DESCR = "DESCR";
+	public static String SIS_STWRZ = "STWRZ";
+	public static String SIS_RSTEXT = "RSTEXT";
+	
+	
 	public static ResultModel calc(String stwrz, String rstextr) {
 
 		double stwz = 0;

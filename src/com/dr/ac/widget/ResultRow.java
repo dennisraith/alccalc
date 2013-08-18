@@ -3,12 +3,15 @@ package com.dr.ac.widget;
 import java.text.NumberFormat;
 
 import android.content.Context;
+import android.text.InputType;
 import android.util.AttributeSet;
 
 public class ResultRow extends DataRow {
 
 	public ResultRow(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		this.mInput.setInputType(InputType.TYPE_NULL);
+		this.mInput.setFocusable(false);
 	}
 
 	public void set(String descr, String content) {
@@ -33,4 +36,5 @@ public class ResultRow extends DataRow {
 		
 		this.mInput.setText(content);
 	}
+	
 }
