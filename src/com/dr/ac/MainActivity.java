@@ -1,8 +1,9 @@
 package com.dr.ac;
-
+import android.view.animation.Animation.AnimationListener;
 import com.dr.ac.ui.InputFragment;
 import com.dr.ac.ui.NavigationFragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -12,9 +13,13 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ToggleButton;
 
@@ -22,8 +27,9 @@ public class MainActivity extends ActionBarActivity {
 
 	private DrawerLayout mDrawerLayout;
 	private NavigationFragment mNavigationFragment;
-	private ActionBarDrawerToggle mToggle;
+	private DrawerToggler mToggle;
 	private View mMenu;
+	private BaseFragment mCurrentFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +46,7 @@ public class MainActivity extends ActionBarActivity {
 		this.getSupportFragmentManager().beginTransaction()
 				.replace(mMenu.getId(), mNavigationFragment).commit();
 		this.navigateTo(new InputFragment());
-		mToggle = new ActionBarDrawerToggle(this, this.mDrawerLayout,
+		mToggle = new DrawerToggler(this, this.mDrawerLayout,
 				android.R.color.transparent, R.string.app_name,
 				R.string.app_name);
 		this.mDrawerLayout.setDrawerListener(mToggle);
@@ -53,18 +59,23 @@ public class MainActivity extends ActionBarActivity {
 		return true;
 	}
 
-	public BaseFragment navigateTo(BaseFragment fragment){
-		return this.navigateTo(fragment,false);
+	public BaseFragment navigateTo(BaseFragment fragment) {
+		return this.navigateTo(fragment, false);
 	}
-	
+
 	public BaseFragment navigateTo(BaseFragment fragment, boolean addToBackStack) {
 
 		this.hideKeyboard();
+		if (mCurrentFragment == fragment) {
+			this.toggleMenu();
+			return mCurrentFragment;
+		}
 		FragmentTransaction transaction = this.getSupportFragmentManager()
 				.beginTransaction();
 		transaction.replace(R.id.content_frame, fragment);
 		transaction.addToBackStack(null);
 		transaction.commit();
+		this.mCurrentFragment = fragment;
 		return fragment;
 	}
 
@@ -121,11 +132,63 @@ public class MainActivity extends ActionBarActivity {
 
 	@Override
 	public void onBackPressed() {
-//		if (this.getSupportFragmentManager().getBackStackEntryCount() > 1) {
-		if(false){
+		// if (this.getSupportFragmentManager().getBackStackEntryCount() > 1) {
+		if (false) {
 			this.getSupportFragmentManager().popBackStack();
 		} else {
 			this.toggleMenu();
 		}
 	}
+
+	class DrawerToggler extends ActionBarDrawerToggle {
+
+		public DrawerToggler(Activity activity, DrawerLayout drawerLayout,
+				int drawerImageRes, int openDrawerContentDescRes,
+				int closeDrawerContentDescRes) {
+			super(activity, drawerLayout, drawerImageRes,
+					openDrawerContentDescRes, closeDrawerContentDescRes);
+		}
+
+		@Override
+		public void onDrawerOpened(View drawerView) {
+			super.onDrawerOpened(drawerView);
+			mNavigationFragment.getListView().setVisibility(View.GONE);
+			mNavigationFragment.animate();
+			
+		}
+		@Override
+		public void onDrawerClosed(View drawerView) {
+			super.onDrawerClosed(drawerView);
+			mNavigationFragment.getListView().setVisibility(View.GONE);
+		}
+	}
+	
+//	class MenuAnimation extends TranslateAnimation implements AnimationListener{
+//
+//		public MenuAnimation(Context context, AttributeSet attrs) {
+//			super(-2000,1,1,1);
+//			this.setDuration(500);
+//			this.setInterpolator(new AccelerateDecelerateInterpolator());
+//			this.setFillAfter(true);
+//			this.setAnimationListener(this);
+//		}
+//
+//		@Override
+//		public void onAnimationEnd(Animation animation) {
+//			// TODO Auto-generated method stub
+//			
+//		}
+//
+//		@Override
+//		public void onAnimationRepeat(Animation animation) {
+//			// TODO Auto-generated method stub
+//			
+//		}
+//
+//		@Override
+//		public void onAnimationStart(Animation animation) {
+//			mNavigationFragment.getListView().setVisibility(View.VISIBLE);
+//		}
+//	}
+	
 }

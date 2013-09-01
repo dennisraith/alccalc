@@ -1,8 +1,8 @@
-package com.dr.ac.widget;
+package com.dr.ac.model;
 
 import java.util.ArrayList;
 
-import com.dr.ac.model.ResultModel;
+import com.dr.ac.widget.ResultEntry;
 
 import android.content.Context;
 import android.view.LayoutInflater;

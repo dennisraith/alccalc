@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import com.dr.ac.BaseFragment;
 import com.dr.ac.R;
+import com.dr.ac.model.ResultAdapter;
 import com.dr.ac.model.ResultModel;
-import com.dr.ac.widget.ResultAdapter;
 import com.dr.ac.widget.ResultEntry;
 
 import android.os.Bundle;

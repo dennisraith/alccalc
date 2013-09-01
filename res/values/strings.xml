@@ -29,5 +29,6 @@
     <string name="fragment_history">Historie</string>
     <string name="fragment_navigation">Navigation</string>
     <string name="fragment_result">Ergebnis</string>
+      <string name="fragment_settings">Einstellungen</string>
 
 </resources>
