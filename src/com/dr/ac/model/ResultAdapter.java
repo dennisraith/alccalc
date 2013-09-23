@@ -1,7 +1,9 @@
 package com.dr.ac.model;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
+import com.dr.ac.constants.ACConsts;
 import com.dr.ac.widget.ResultEntry;
 
 import android.content.Context;
@@ -45,7 +47,7 @@ public class ResultAdapter extends BaseExpandableListAdapter {
 		}
 		ResultModel model = mData.get(groupPosition);
 		TextView tv = (TextView) convertView.findViewById(android.R.id.text1); 		
-		tv.setText(model.getBrennwertCal()+"");
+		tv.setText(ACConsts.ReadableDate.format(model.getCreationDate()));
 		
 		
 		return convertView;

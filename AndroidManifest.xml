@@ -14,6 +14,10 @@
         android:label="@string/app_name"
         android:name="com.dr.ac.ACApplication"
         android:theme="@style/Theme.AppCompat.Light.DarkActionBar" >
+        
+        <meta-data android:name="AA_DB_NAME" android:value="AlcCalc.db" />
+		<meta-data android:name="AA_DB_VERSION" android:value="1" />
+        
         <activity
             android:name="com.dr.ac.MainActivity"
             android:label="@string/app_name" >

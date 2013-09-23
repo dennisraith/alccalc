@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.dr.ac.BaseFragment;
 import com.dr.ac.R;
+import com.dr.ac.manager.ConfigManager;
 import com.dr.ac.model.ResultAdapter;
 import com.dr.ac.model.ResultModel;
 import com.dr.ac.widget.ResultEntry;
@@ -35,9 +36,14 @@ public class HistoryFragment extends BaseFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
+		this.loadEntries();
 
 		ResultAdapter adapter = new ResultAdapter(this.getActivity(), mEntries);
 		this.mList.setAdapter(adapter);
+	}
+
+	private void loadEntries() {
+		this.mEntries = ConfigManager.getInstance().loadData();
 	}
 
 	public void setEntries(ArrayList<ResultModel> entries) {

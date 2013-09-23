@@ -2,6 +2,7 @@ package com.dr.ac.ui;
 
 
 import com.dr.ac.BaseFragment;
+import com.dr.ac.MainActivity;
 import com.dr.ac.R;
 import com.dr.ac.model.MenuAdapter;
 
@@ -24,6 +25,7 @@ public class NavigationFragment extends BaseFragment implements OnItemClickListe
 
 	private ListView mListView;
 	private View mBanner;
+	private MainActivity mActivity;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,7 +49,7 @@ public class NavigationFragment extends BaseFragment implements OnItemClickListe
 	
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-		MenuAdapter.getInstance().getItem(position).getTargetFragment();
+		this.getMainActivity().navigateTo(MenuAdapter.getInstance().getItem(position).getTargetFragment());
 		
 		
 	}

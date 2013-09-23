@@ -1,5 +1,8 @@
 package com.dr.ac.constants;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import com.dr.ac.model.ResultModel;
 
 public class ACConsts {
@@ -20,6 +23,8 @@ public class ACConsts {
 	public static final int TARGET_SETTINGS = 222;
 	public static final int TARGET_HISTORY = 333;
 
+	public static final SimpleDateFormat ReadableDate = new SimpleDateFormat("dd.MM.yyyy hh:mm", Locale.GERMANY);
+	
 	public static ResultModel calc(String stwrz, String rstextr) {
 
 		double stwz = 0;

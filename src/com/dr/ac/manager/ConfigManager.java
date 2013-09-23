@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,6 +17,7 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.activeandroid.query.Select;
 import com.dr.ac.ACApplication;
 import com.dr.ac.R;
 import com.dr.ac.constants.ACConsts;
@@ -37,15 +39,6 @@ public class ConfigManager {
 	public static ConfigManager getInstance() {
 		if (sInstance == null) {
 			sInstance = new ConfigManager();
-			try {
-				sInstance.loadData();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 		return sInstance;
 	}
@@ -63,36 +56,39 @@ public class ConfigManager {
 	}
 
 	public void saveData(ResultModel model) throws JSONException, IOException {
-		JSONArray data = new JSONArray();
-		data.put(model.toJSON());
-		FileOutputStream fos = mContext.openFileOutput(ACConsts.DB_FILE_NAME,
-				Context.MODE_PRIVATE);
-		Writer out = new OutputStreamWriter(fos);
-		out.write(data.toString());
-		out.close();
-		this.mResultData.add(model);
-		Toast.makeText(mContext, R.string.toast_save_successful,
-				Toast.LENGTH_SHORT).show();
+//		JSONArray data = new JSONArray();
+//		data.put(model.toJSON());
+//		FileOutputStream fos = mContext.openFileOutput(ACConsts.DB_FILE_NAME,
+//				Context.MODE_PRIVATE);
+//		Writer out = new OutputStreamWriter(fos);
+//		out.write(data.toString());
+//		out.close();
+//		this.mResultData.add(model);
+//		Toast.makeText(mContext, R.string.toast_save_successful,
+//				Toast.LENGTH_SHORT).show();
+		model.save();
 	}
 
-	public JSONArray loadData() throws IOException, JSONException {
-		FileInputStream input = mContext.openFileInput(ACConsts.DB_FILE_NAME);
-		BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-		StringBuilder builder = new StringBuilder();
-		String data;
-		while ((data = reader.readLine()) != null) {
-			builder.append(data);
-
-		}
-
-		JSONArray result = new JSONArray(builder.toString());
-		for (int i = 0; i < result.length(); i++) {
-			ResultModel model =ResultModel.fromJSON(result.getJSONObject(i));
-			this.mResultData.add(model);
-			Log.d("", model.toJSON().toString(2));
-		}
+	public ArrayList<ResultModel> loadData() {
+//		FileInputStream input = mContext.openFileInput(ACConsts.DB_FILE_NAME);
+//		BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+//		StringBuilder builder = new StringBuilder();
+//		String data;
+//		while ((data = reader.readLine()) != null) {
+//			builder.append(data);
+//
+//		}
+//
+//		JSONArray result = new JSONArray(builder.toString());
+//		for (int i = 0; i < result.length(); i++) {
+//			ResultModel model =ResultModel.fromJSON(result.getJSONObject(i));
+//			this.mResultData.add(model);
+//			Log.d("", model.toJSON().toString(2));
+//		}
 		
-		return result;
+		ArrayList<ResultModel> list = new Select().all().from(ResultModel.class).execute();
+		
+		return list;
 	}
 
 }

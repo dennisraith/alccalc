@@ -20,6 +20,7 @@ public class ResultFragment extends BaseFragment {
 		this.setTitle(R.string.fragment_result);
 		ResultEntry entry = new ResultEntry(getActivity());
 		entry.initWithmodel(model);
+		model.save();
 		return entry;
 	}
 

@@ -5,25 +5,39 @@ import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import com.dr.ac.constants.ACConsts;
-
-public class ResultModel {
+@Table(name="Result")
+public class ResultModel extends Model {
 
 	private int STATUS_CODE = ACConsts.STATUS_ERROR;
 
+	@Column(name="descr")
 	private String mDescr = "";
+	@Column(name="comment")
 	private String mComment = "";
-
+	@Column(name="created")
 	private Date mDateCreated = new Date();
 
+	@Column(name="stwrz")
 	private double mStwrz;
+	@Column(name="rstextr")
 	private double mRstExtr;
+	@Column(name="realrstextr")
 	private double mRealRestExtr;
+	@Column(name="dichte")
 	private double mDichte;
+	@Column(name="gewproalk")
 	private double mGewProAlk;
+	@Column(name="vol")
 	private double mVol;
+	@Column(name="endverg")
 	private double mEndVergärung;
+	@Column(name="brennwcal")
 	private double mBrennwertCal;
+	@Column(name="brennwjoule")
 	private double mBrennwertJoule;
 
 	public ResultModel() {
