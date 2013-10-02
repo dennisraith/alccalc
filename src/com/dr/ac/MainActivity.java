@@ -36,7 +36,6 @@ public class MainActivity extends ActionBarActivity {
         this.setContentView(R.layout.layout_main);
         this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.getSupportActionBar().setHomeButtonEnabled(false);
-
         this.mDrawerLayout = (DrawerLayout) this.findViewById(R.id.drawer_layout);
         this.mMenu = this.findViewById(R.id.drawer_menu);
         this.mNavigationFragment = new NavigationFragment();
