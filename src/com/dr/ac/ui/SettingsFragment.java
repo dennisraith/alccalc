@@ -27,6 +27,7 @@ public class SettingsFragment extends BaseFragment implements OnItemClickListene
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        this.setTitle(R.string.fragment_settings);
         if (SettingsFragment.ListData == null) {
             SettingsFragment.ListData = new ArrayList<Setting>();
             SettingsFragment.ListData.add(new Setting(R.string.setting_clear, SettingsAction.CLEAR_DATA));

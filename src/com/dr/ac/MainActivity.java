@@ -169,12 +169,15 @@ public class MainActivity extends ActionBarActivity {
         @Override
         public void onDrawerOpened(View drawerView) {
             super.onDrawerOpened(drawerView);
+            MainActivity.this.setTitle("");
 
         }
 
         @Override
         public void onDrawerClosed(View drawerView) {
             super.onDrawerClosed(drawerView);
+            MainActivity.this.setTitle(MainActivity.this.mCurrentFragment.getTitle());
+
         }
     }
 
