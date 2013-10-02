@@ -1,186 +1,181 @@
+
 package com.dr.ac;
-import com.dr.ac.ui.InputFragment;
-import com.dr.ac.ui.NavigationFragment;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.dr.ac.constants.ACConsts;
+import com.dr.ac.ui.InputFragment;
+import com.dr.ac.ui.NavigationFragment;
+
+
 public class MainActivity extends ActionBarActivity {
 
-	private DrawerLayout mDrawerLayout;
-	private NavigationFragment mNavigationFragment;
-	private DrawerToggler mToggle;
-	private View mMenu;
-	private BaseFragment mCurrentFragment;
+    private DrawerLayout       mDrawerLayout;
+    private NavigationFragment mNavigationFragment;
+    private DrawerToggler      mToggle;
+    private View               mMenu;
+    private BaseFragment       mCurrentFragment;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.layout_main);
-		this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		this.getSupportActionBar().setHomeButtonEnabled(false);
+        this.setContentView(R.layout.layout_main);
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        this.getSupportActionBar().setHomeButtonEnabled(false);
 
-		this.mDrawerLayout = (DrawerLayout) this
-				.findViewById(R.id.drawer_layout);
-		this.mMenu = this.findViewById(R.id.drawer_menu);
-		this.mNavigationFragment = new NavigationFragment();
-		this.getSupportFragmentManager().beginTransaction()
-				.replace(mMenu.getId(), mNavigationFragment).commit();
-		this.navigateTo(new InputFragment());
-		mToggle = new DrawerToggler(this, this.mDrawerLayout,
-				android.R.color.transparent, R.string.app_name,
-				R.string.app_name);
-		this.mDrawerLayout.setDrawerListener(mToggle);
-	}
+        this.mDrawerLayout = (DrawerLayout) this.findViewById(R.id.drawer_layout);
+        this.mMenu = this.findViewById(R.id.drawer_menu);
+        this.mNavigationFragment = new NavigationFragment();
+        this.getSupportFragmentManager().beginTransaction()
+                .replace(this.mMenu.getId(), this.mNavigationFragment).commit();
+        this.navigateTo(new InputFragment());
+        this.mToggle = new DrawerToggler(this, this.mDrawerLayout,
+                android.R.color.transparent, R.string.app_name,
+                R.string.app_name);
+        this.mDrawerLayout.setDrawerListener(this.mToggle);
+        this.mDrawerLayout.closeDrawer(this.mMenu);
+        boolean firstStartup = this.getSharedPreferences(ACConsts.PREFS_NAME, 0).getBoolean(ACConsts.PREF_STARTUP, true);
+        Log.d(this.getClass().getName(), firstStartup + "");
+        this.handleFirstStartup(firstStartup);
+    }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
+    private void handleFirstStartup(boolean firstStartup) {
+        if (firstStartup) {
+            this.mDrawerLayout.openDrawer(this.mMenu);
+            new Handler().postDelayed(new Runnable() {
 
-	public BaseFragment navigateTo(BaseFragment fragment) {
-		return this.navigateTo(fragment, false);
-	}
+                @Override
+                public void run() {
+                    MainActivity.this.mDrawerLayout.closeDrawer(MainActivity.this.mMenu);
+                }
+            }, 1500);
 
-	public BaseFragment navigateTo(BaseFragment fragment, boolean addToBackStack) {
+        }
 
-		this.hideKeyboard();
-		if (mCurrentFragment == fragment) {
-			this.toggleMenu();
-			return mCurrentFragment;
-		}
-		FragmentTransaction transaction = this.getSupportFragmentManager()
-				.beginTransaction();
-		transaction.replace(R.id.content_frame, fragment);
-		transaction.addToBackStack(null);
-		transaction.commit();
-		this.mCurrentFragment = fragment;
-		return fragment;
-	}
+        this.getSharedPreferences(ACConsts.PREFS_NAME, 0).edit().putBoolean(ACConsts.PREF_STARTUP, false).commit();
+    }
 
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		return super.onPrepareOptionsMenu(menu);
-	}
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        this.getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
 
-	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
-		super.onPostCreate(savedInstanceState);
-		mToggle.syncState();
-	}
+    public BaseFragment navigateTo(BaseFragment fragment) {
+        return this.navigateTo(fragment, false);
+    }
 
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-		mToggle.onConfigurationChanged(newConfig);
-	}
+    public BaseFragment navigateTo(BaseFragment fragment, boolean addToBackStack) {
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (mToggle.onOptionsItemSelected(item)) {
-			return true;
-		}
+        this.hideKeyboard();
+        if (this.mCurrentFragment == fragment) {
+            return this.mCurrentFragment;
+        }
+        FragmentTransaction transaction = this.getSupportFragmentManager()
+                .beginTransaction();
+        transaction.replace(R.id.content_frame, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+        this.mCurrentFragment = fragment;
+        this.toggleMenu(true);
+        return fragment;
+    }
 
-		return super.onOptionsItemSelected(item);
-	}
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        return super.onPrepareOptionsMenu(menu);
+    }
 
-	public void setTitle(String title) {
-		this.getSupportActionBar().setTitle(title);
-	}
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        this.mToggle.syncState();
+    }
 
-	public void setTitle(int title) {
-		this.getSupportActionBar().setTitle(title);
-	}
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        this.mToggle.onConfigurationChanged(newConfig);
+    }
 
-	public void hideKeyboard() {
-		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-		View view = this.getCurrentFocus();
-		if (view != null) {
-			imm.hideSoftInputFromWindow(
-					this.getCurrentFocus().getWindowToken(), 0);
-		}
-	}
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (this.mToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
 
-	public void toggleMenu() {
-		if (this.mDrawerLayout.isDrawerVisible(this.mMenu)) {
-			this.mDrawerLayout.closeDrawer(this.mMenu);
-		} else {
-			this.mDrawerLayout.openDrawer(this.mMenu);
-		}
-	}
+        return super.onOptionsItemSelected(item);
+    }
 
-	@Override
-	public void onBackPressed() {
-		// if (this.getSupportFragmentManager().getBackStackEntryCount() > 1) {
-		if (false) {
-			this.getSupportFragmentManager().popBackStack();
-		} else {
-			this.toggleMenu();
-		}
-	}
+    public void setTitle(String title) {
+        this.getSupportActionBar().setTitle(title);
+    }
 
-	class DrawerToggler extends ActionBarDrawerToggle {
+    @Override
+    public void setTitle(int title) {
+        this.getSupportActionBar().setTitle(title);
+    }
 
-		public DrawerToggler(Activity activity, DrawerLayout drawerLayout,
-				int drawerImageRes, int openDrawerContentDescRes,
-				int closeDrawerContentDescRes) {
-			super(activity, drawerLayout, drawerImageRes,
-					openDrawerContentDescRes, closeDrawerContentDescRes);
-		}
+    public void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            imm.hideSoftInputFromWindow(
+                    this.getCurrentFocus().getWindowToken(), 0);
+        }
+    }
 
-		@Override
-		public void onDrawerOpened(View drawerView) {
-			super.onDrawerOpened(drawerView);
-			mNavigationFragment.getListView().setVisibility(View.GONE);
-			mNavigationFragment.animate();
-			
-		}
-		@Override
-		public void onDrawerClosed(View drawerView) {
-			super.onDrawerClosed(drawerView);
-			mNavigationFragment.getListView().setVisibility(View.GONE);
-		}
-	}
-	
-//	class MenuAnimation extends TranslateAnimation implements AnimationListener{
-//
-//		public MenuAnimation(Context context, AttributeSet attrs) {
-//			super(-2000,1,1,1);
-//			this.setDuration(500);
-//			this.setInterpolator(new AccelerateDecelerateInterpolator());
-//			this.setFillAfter(true);
-//			this.setAnimationListener(this);
-//		}
-//
-//		@Override
-//		public void onAnimationEnd(Animation animation) {
-//			// TODO Auto-generated method stub
-//			
-//		}
-//
-//		@Override
-//		public void onAnimationRepeat(Animation animation) {
-//			// TODO Auto-generated method stub
-//			
-//		}
-//
-//		@Override
-//		public void onAnimationStart(Animation animation) {
-//			mNavigationFragment.getListView().setVisibility(View.VISIBLE);
-//		}
-//	}
-	
+    public void toggleMenu(boolean forceClose) {
+        if (this.mDrawerLayout.isDrawerVisible(this.mMenu)) {
+            this.mDrawerLayout.closeDrawer(this.mMenu);
+        } else if (!forceClose) {
+            this.mDrawerLayout.openDrawer(this.mMenu);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (this.getSupportFragmentManager().getBackStackEntryCount() > 1) {
+            this.getSupportFragmentManager().popBackStack();
+        } else {
+            this.toggleMenu(false);
+        }
+    }
+
+    class DrawerToggler extends ActionBarDrawerToggle {
+
+        public DrawerToggler(Activity activity, DrawerLayout drawerLayout,
+                int drawerImageRes, int openDrawerContentDescRes,
+                int closeDrawerContentDescRes) {
+            super(activity, drawerLayout, drawerImageRes,
+                    openDrawerContentDescRes, closeDrawerContentDescRes);
+        }
+
+        @Override
+        public void onDrawerOpened(View drawerView) {
+            super.onDrawerOpened(drawerView);
+
+        }
+
+        @Override
+        public void onDrawerClosed(View drawerView) {
+            super.onDrawerClosed(drawerView);
+        }
+    }
+
 }

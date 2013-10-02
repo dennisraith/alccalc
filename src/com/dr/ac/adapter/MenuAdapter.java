@@ -1,9 +1,10 @@
-package com.dr.ac.model;
+package com.dr.ac.adapter;
 
 import java.util.ArrayList;
 
 import com.dr.ac.ACApplication;
 import com.dr.ac.constants.ACConsts;
+import com.dr.ac.model.MenuItemModel;
 
 import android.R;
 import android.content.Context;
