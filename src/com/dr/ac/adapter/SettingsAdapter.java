@@ -2,6 +2,7 @@
 package com.dr.ac.adapter;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +47,7 @@ public class SettingsAdapter extends BaseAdapter {
         }
         TextView tv = (TextView) convertView.findViewById(android.R.id.text1);
         tv.setText(this.getItem(position).getName());
+        tv.setGravity(Gravity.CENTER);
         return convertView;
     }
 

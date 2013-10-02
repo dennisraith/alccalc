@@ -1,5 +1,5 @@
 
-package com.dr.ac.model;
+package com.dr.ac.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -10,6 +10,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
 import com.dr.ac.constants.ACConsts;
+import com.dr.ac.model.ResultModel;
 import com.dr.ac.widget.ResultEntry;
 
 import java.util.ArrayList;
